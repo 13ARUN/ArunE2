@@ -1,0 +1,103 @@
+/* External CSS */
+/*haiiii*/
+/*byee*/
+header {
+    background-color: #704caf;
+    color: white;
+    text-align: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    position: sticky;
+    top: 0px;
+}
+nav a {
+    display: inline-block;
+    padding: 14px 16px;
+}
+nav a:hover {
+    background-color: #ddd;
+    color: black;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar a {
+    display: block;
+    color: #fff;
+    padding: 10px;
+}
+
+.sidebar a:hover{
+    background-color: white;
+    color: black;
+    cursor: pointer;
+
+}
+aside {
+    background-color: #bca5dd;
+    padding: 1%;
+    width: 80%;
+    text-align: center;
+}
+
+.content {
+    
+    padding: 15px;
+    text-align: justify;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.category {
+    text-align: center;
+}
+.box{
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    display: inline-block;
+    text-align: center;
+    margin: 10px;
+    width: 225px;
+}
+
+.box img{
+    width: 225px;
+    height: 225px;
+    object-fit: cover;
+}
+
+.box:hover{
+    border-color: white;
+    background-color: black;
+    color: white;
+}
+
+.element{
+    text-align: left;
+    display: block;
+}
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    position: relative;
+    
+}
