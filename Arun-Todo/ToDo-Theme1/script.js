@@ -134,15 +134,19 @@ function createTaskElement(task) {
     let aTask = document.createElement("div"); //? Create div atask to add elements for each task
     aTask.classList.add("atask"); // Add a class name "atask"
     aTask.style.opacity = task.completed ? '0.6' : '1';
-    aTask.innerHTML = ` <div class="cbox">
-                            <button id="checkbox-${task.id}" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
-                            <img src="${task.completed ? 'img/tick.png' : 'img/untick.png'}" alt="checkbox">
-                            </button>
-                        </div>
+    aTask.innerHTML = ` 
                         <div class="eachtask">
                             <input type="text" id="onetask-${task.id}" value="${task.text}" maxlength="150" readonly> <!--//? Task content Default:readonly-->
                         </div>
+                        <!--<div class="cbox">
+                            <button id="checkbox-${task.id}" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
+                            <img src="${task.completed ? 'img/done.png' : 'img/notdone.png'}" alt="checkbox">
+                            </button>
+                        </div> -->
                         <div class="editdel" id="edit-${task.id}">
+                            <button id="checkbox-${task.id}" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
+                            <img src="${task.completed ? 'img/done.png' : 'img/notdone.png'}" alt="checkbox">
+                            </button>
                             <button onclick="toggleEdit(${task.id})"> <!--//! Function call: To enable editing of task content-->
                             <img src="img/edit.png" alt="edit icon">
                             </button>  <!--//? Edit button-->
@@ -151,6 +155,9 @@ function createTaskElement(task) {
                             </button>  <!--//? Delete button-->
                         </div>
                         <div class="savecancel" id="save-${task.id}" style="display:none">
+                            <button id="checkbox-${task.id}" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
+                            <img src="${task.completed ? 'img/done.png' : 'img/notdone.png'}" alt="checkbox">
+                            </button>
                             <button onclick="saveTask(${task.id})">  <!--//! Function call: To save edited task-->
                             <img src="img/save.png" alt="save icon">
                             </button>  <!--//? Save button-->
