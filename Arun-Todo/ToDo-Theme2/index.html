@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="img/titleicon.png">
+    <title>ToDoHub</title>
+</head>
+<body>
+    <div class="main">
+        
+        <!--* 1.Todo Application -->
+        <div class="todo">
+            <!--* 1.1 Header Section -->
+            <header>
+                <h1>To Do Planner!</h1>
+            </header>
+
+            <!--* 1.2 Task Input Field -->
+            <div class="taskfield">
+                <div class="taskinput">
+                    <input type="text" id="input" placeholder="Enter your tasks..." maxlength="150">
+                    <button onclick="addTask()"> <img src="img/taskadd.png" alt="add icon"></button>    
+                </div>
+            </div>
+
+            <!--* 1.3 Task Text and Filter Section -->
+            <div class="tasktext">
+                <h3>You have n tasks to do!</h3> <!-- Task count display -->
+                <div class="taskfilterclr">
+                    <select name="status" id="statusFilter">
+                        <option value="all">All</option>
+                        <option value="inprogress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <button id="Clear" onclick="clearAllTasks()">Clear all</button> <!-- Clear all tasks button -->
+                </div>
+            </div>
+
+            <!--* 1.4 No Tasks Message Section -->
+            <div class="notasks">
+                <div class="notaskcontent">
+                    <img src="img/notask.png" alt="notask image">
+                    <h2>Nothing Here!</h2>
+                </div>
+            </div>
+            
+            <!--* 1.5 Task List Section -->
+            <div class="tasklist" style="display: none"> <!-- Initially hidden -->
+                <div class="taskdisplay">
+                    <ul id="listtask">
+                        <!--* 1.6 atask-->
+                        <!--* Tasks will be added here as atask div -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--* 2.Notification Section -->
+    <p class="notification" style="visibility: hidden;"></p>
+
+    <!--* JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>
