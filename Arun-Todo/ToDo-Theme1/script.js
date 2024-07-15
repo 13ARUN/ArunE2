@@ -46,6 +46,9 @@ inputBox.addEventListener('keydown', (e) => {
 //* 5.Function to render tasks 
 function renderTasks() {
 
+    //* Remove error highlight */
+    inputBox.style.borderBottom = 'none';
+
     //* Get existing tasks and filter value from local storage
     let allTasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : []; //Get tasks if it exists in local storage else empty
     const filter = statusFilter.value; // Get filter value
@@ -69,12 +72,19 @@ function addTask(){
 
     //* Input task validation
     // Validate a empty task 
-    if (inputBox.value === '' || inputBox.value.replace(/\s+/g, ' ') === ' ' ) { 
+    if (inputBox.value === '') { 
         showNotification('Task cannot be empty!!','#b80d0d'); //! Function call: To display empty task error message
         inputBox.focus();
         inputBox.style.borderBottom = '2px solid red';
+    }
+    // Validate for only Spaces
+    else if (inputBox.value.replace(/\s+/g, ' ') === ' '){
+        showNotification('Task cannot contain only spaces!','#b80d0d'); //! Function call: To display only space characters error message
+        inputBox.focus();
+        inputBox.style.borderBottom = '2px solid red';
+    }
     // Validate a existing task
-    }else if (isTaskAlreadyExists(inputBox.value.trim().replace(/\s+/g, ' '), -1)) { //! Function call: To check the task content already exists
+    else if (isTaskAlreadyExists(inputBox.value.trim().replace(/\s+/g, ' '), -1)) { //! Function call: To check the task content already exists
         showNotification('Task already exists!','#b80d0d'); //! Function call: To display existing task error message
         inputBox.focus();
         inputBox.style.borderBottom = '2px solid red';
@@ -344,5 +354,5 @@ function showNotification(text,color){
         notification.textContent = "";
         notification.classList.remove(`.notification`);
         notification.style.visibility = 'hidden';
-    }, 1500);
+    }, 2000);
 }
