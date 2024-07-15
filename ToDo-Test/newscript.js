@@ -36,11 +36,12 @@ inputBox.addEventListener('input', () => {
     inputBox.style.borderBottom = 'none';
 });
 
+inputBox.addEventListener('blur', () => {
+    inputBox.style.borderBottom = 'none'; // Remove border style when not focused
+});
+
 //* 5.Function to render tasks 
 function renderTasks() {
-
-    //* Remove error highlight */
-    inputBox.style.borderBottom = 'none';
 
     inputBox.disabled = false;
     clearButton.disabled = false;
@@ -98,12 +99,12 @@ function addTask(){
         localStorage.setItem('taskIdCounter', taskIdCounter); // Save the updated counter
         localStorage.setItem('statusFilter', 'all');
         showNotification('Task added sucessfully','green'); //! Function call: To show task added message
-        inputBox.focus();
         const statusFilter = document.querySelector('input[name="taskFilter"][value="all"]');
         statusFilter.checked = true;
         renderTasks(); //! Function call: To Re-render tasks
     }
     inputBox.value = ""; //? Empty contents of input field 
+    inputBox.focus();
 }
 
 

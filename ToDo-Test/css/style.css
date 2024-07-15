@@ -320,8 +320,8 @@ ul::-webkit-scrollbar-thumb {
     outline: none;
 }
 .savecancel button{
-    height: 60%;
-    width: 70%;
+    height: 80%;
+    width: 55%;
     cursor: pointer;
     background-color: #e0d1f3;
     border: none;
