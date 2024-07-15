@@ -389,36 +389,7 @@ function showNotification(text,color){
     }, 2000);
 }
 
-// Function to create and show a toast message
-function showToast(message, onConfirm, onCancel) {
-    const toastContainer = document.getElementById('toast-container');
-    
-    const toastMessage = document.createElement('div');
-    toastMessage.className = 'toast-message';
-    
-    const messageText = document.createElement('span');
-    messageText.textContent = message;
-    
-    const confirmButton = document.createElement('button');
-    confirmButton.textContent = 'Yes';
-    confirmButton.onclick = () => {
-        onConfirm();
-        toastContainer.removeChild(toastMessage);
-    };
-    
-    const cancelButton = document.createElement('button');
-    cancelButton.textContent = 'No';
-    cancelButton.onclick = () => {
-        onCancel();
-        toastContainer.removeChild(toastMessage);
-    };
-    
-    toastMessage.appendChild(messageText);
-    toastMessage.appendChild(confirmButton);
-    toastMessage.appendChild(cancelButton);
-    
-    toastContainer.appendChild(toastMessage);
-}
+
 
 // Function to delete a task with confirmation
 function deleteTask(taskId) {
@@ -432,6 +403,8 @@ function deleteTask(taskId) {
         showNotification('Task deletion canceled', 'red');
     });
 }
+
+
 
 // Function to clear all tasks from screen and local storage based on filter with confirmation
 function clearAllTasks() {
@@ -471,6 +444,58 @@ function clearAllTasks() {
         showNotification('Task clearing canceled', 'red');
     });
 }
+
+// Function to create and show a toast message
+function showToast(message, onConfirm, onCancel) {
+    const toastContainer = document.getElementById('toast-container');
+    
+    const toastMessage = document.createElement('div');
+    toastMessage.className = 'toast-message';
+    
+    const messageText = document.createElement('span');
+    messageText.textContent = message;
+    
+    const confirmButton = document.createElement('button');
+    confirmButton.textContent = 'Yes';
+    confirmButton.onclick = () => {
+        onConfirm();
+        removeToast(toastMessage);
+    };
+    
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = 'No';
+    cancelButton.onclick = () => {
+        onCancel();
+        removeToast(toastMessage);
+    };
+    
+    toastMessage.appendChild(messageText);
+    toastMessage.appendChild(confirmButton);
+    toastMessage.appendChild(cancelButton);
+    
+    toastContainer.appendChild(toastMessage);
+    
+    // Add blur effect to the main content and the overlay
+    document.body.classList.add('blurred');
+
+    const blurredOverlay = document.createElement('div');
+    blurredOverlay.className = 'blurred-overlay';
+    document.body.appendChild(blurredOverlay);
+}
+
+// Function to remove toast message and blur effect
+function removeToast(toastMessage) {
+    const toastContainer = document.getElementById('toast-container');
+    toastContainer.removeChild(toastMessage);
+
+    document.body.classList.remove('blurred');
+
+    const blurredOverlay = document.querySelector('.blurred-overlay');
+    if (blurredOverlay) {
+        document.body.removeChild(blurredOverlay);
+    }
+}
+
 // Modify the saveTask function to include confirmation
 function saveTask(taskId) {
     let allTasks = JSON.parse(localStorage.getItem('tasks'));
