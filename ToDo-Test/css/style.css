@@ -396,6 +396,35 @@ ul::-webkit-scrollbar-thumb {
     
   }
 
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 1000;
+}
+
+.toast-message {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toast-message button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
 /** Media query - responsive design*/
 /*? Max width */
 

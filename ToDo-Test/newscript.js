@@ -196,14 +196,14 @@ function toggleTaskListVisibility(tasks) {
 }
 
 //* 11.Function to delete a task
-function deleteTask(taskId) {
-    let allTasks = JSON.parse(localStorage.getItem('tasks')); //? Get the tasks from local storage
-    allTasks = allTasks.filter(task => task.id !== taskId); // Select the task(s) other that selected id 
-    localStorage.setItem('tasks', JSON.stringify(allTasks));
+// function deleteTask(taskId) {
+//     let allTasks = JSON.parse(localStorage.getItem('tasks')); //? Get the tasks from local storage
+//     allTasks = allTasks.filter(task => task.id !== taskId); // Select the task(s) other that selected id 
+//     localStorage.setItem('tasks', JSON.stringify(allTasks));
 
-    showNotification('Task deleted sucessfully','green'); //! Function call: To show task deleted message
-    renderTasks(); //! Function call: To Re-render tasks after deletion
-}
+//     showNotification('Task deleted sucessfully','green'); //! Function call: To show task deleted message
+//     renderTasks(); //! Function call: To Re-render tasks after deletion
+// }
 
 //* 12.Function to toggle from edit/delete to save/cancel
 function toggleEdit(taskId) {
@@ -274,37 +274,37 @@ function toggleTaskControls(taskId, from, to) {
 }
 
 //* 15.Function to save edited task
-function saveTask(taskId) {
+// function saveTask(taskId) {
 
-    //* Get the edited and original task text
-    let alltasks = JSON.parse(localStorage.getItem('tasks'));
-    let taskText = document.querySelector(`#onetask-${taskId}`);
-    let editedText = taskText.value.trim().replace(/\s+/g, ' '); //? Trim spaces in the input
-    let task = alltasks.find(task => task.id === taskId);
+//     //* Get the edited and original task text
+//     let alltasks = JSON.parse(localStorage.getItem('tasks'));
+//     let taskText = document.querySelector(`#onetask-${taskId}`);
+//     let editedText = taskText.value.trim().replace(/\s+/g, ' '); //? Trim spaces in the input
+//     let task = alltasks.find(task => task.id === taskId);
 
-    //* Validation for editing the task
-    if (editedText === '') {  // Empty task
-        showNotification('Task cannot be empty!!','#b80d0d'); //! Function call: To show empty task message
-        taskText.style.borderBottom = '2px solid red';
-        return;
-    }
+//     //* Validation for editing the task
+//     if (editedText === '') {  // Empty task
+//         showNotification('Task cannot be empty!!','#b80d0d'); //! Function call: To show empty task message
+//         taskText.style.borderBottom = '2px solid red';
+//         return;
+//     }
 
-    //*Validation for existing task
-    if (isTaskAlreadyExists(editedText, taskId)) {  //! Function call: To check the task content already exists
-        showNotification('Task already exists!','#b80d0d'); //! Function call: To show task exist error message
-        taskText.style.borderBottom = '2px solid red'; 
-        return;
-    }
+//     //*Validation for existing task
+//     if (isTaskAlreadyExists(editedText, taskId)) {  //! Function call: To check the task content already exists
+//         showNotification('Task already exists!','#b80d0d'); //! Function call: To show task exist error message
+//         taskText.style.borderBottom = '2px solid red'; 
+//         return;
+//     }
 
-    //* Save edited task
-    task.text = editedText;
-    localStorage.setItem('tasks', JSON.stringify(alltasks));
+//     //* Save edited task
+//     task.text = editedText;
+//     localStorage.setItem('tasks', JSON.stringify(alltasks));
 
-    showNotification('Task updated sucessfully!','green'); //! Function call: To show task updated message
-    toggleSave(taskId); //! Function call: To toggle to edit/delete div
-    renderTasks(); //! Function call: To Re-render tasks after saving
+//     showNotification('Task updated sucessfully!','green'); //! Function call: To show task updated message
+//     toggleSave(taskId); //! Function call: To toggle to edit/delete div
+//     renderTasks(); //! Function call: To Re-render tasks after saving
     
-}
+// }
 
 //* 16.Function to cancel editing task
 function cancelEdit(taskId) {
@@ -340,34 +340,34 @@ function checkBox(taskId) {
 
 
 //* 18.Function to clear all tasks from screen and local storage based on filter
-function clearAllTasks() {
+// function clearAllTasks() {
 
-    let allTasks = JSON.parse(localStorage.getItem('tasks')) || []; // Get all tasks from local storage
-    const filter = localStorage.getItem('statusFilter'); // Get filter value    taskList.innerHTML = ''; // Clear task list on screen
+//     let allTasks = JSON.parse(localStorage.getItem('tasks')) || []; // Get all tasks from local storage
+//     const filter = localStorage.getItem('statusFilter'); // Get filter value    taskList.innerHTML = ''; // Clear task list on screen
    
-    if (filter === 'all') {
-        taskList.innerHTML = ''; // Clear task list on screen
-        localStorage.removeItem('tasks'); // Clear local storage
-        localStorage.removeItem('taskIdCounter'); // Clear the taskIdCounter from local storage
-        showNotification('All tasks cleared!','green'); //! Function call: To show all tasks cleared message
-        taskIdCounter = 0; // Reset the counter
-        renderTasks(); //! Function call: To Re-render tasks after clearing all tasks
-    } else if (filter === 'inprogress') {
-        allTasks = allTasks.filter(task => task.completed); // Filter out completed tasks
-        localStorage.setItem('tasks', JSON.stringify(allTasks)); // Save filtered tasks to local storage
-        showNotification('In-progress tasks cleared!','green'); //! Function call: To show In progress tasks cleared message
-        renderTasks(); //! Function call: To Re-render tasks after clearing In progress tasks
-        taskCountText.textContent = `You have 0 tasks to do!`;
+//     if (filter === 'all') {
+//         taskList.innerHTML = ''; // Clear task list on screen
+//         localStorage.removeItem('tasks'); // Clear local storage
+//         localStorage.removeItem('taskIdCounter'); // Clear the taskIdCounter from local storage
+//         showNotification('All tasks cleared!','green'); //! Function call: To show all tasks cleared message
+//         taskIdCounter = 0; // Reset the counter
+//         renderTasks(); //! Function call: To Re-render tasks after clearing all tasks
+//     } else if (filter === 'inprogress') {
+//         allTasks = allTasks.filter(task => task.completed); // Filter out completed tasks
+//         localStorage.setItem('tasks', JSON.stringify(allTasks)); // Save filtered tasks to local storage
+//         showNotification('In-progress tasks cleared!','green'); //! Function call: To show In progress tasks cleared message
+//         renderTasks(); //! Function call: To Re-render tasks after clearing In progress tasks
+//         taskCountText.textContent = `You have 0 tasks to do!`;
         
-    } else if (filter === 'completed') {
-        allTasks = allTasks.filter(task => !task.completed); // Filter out in-progress tasks
-        localStorage.setItem('tasks', JSON.stringify(allTasks)); // Save filtered tasks to local storage
-        showNotification('Completed tasks cleared!','green'); //! Function call: To show completed tasks cleared message
-        renderTasks(); //! Function call: To Re-render tasks after clearing completed tasks
-        taskCountText.textContent = `You have completed 0 tasks!`;
-    }
+//     } else if (filter === 'completed') {
+//         allTasks = allTasks.filter(task => !task.completed); // Filter out in-progress tasks
+//         localStorage.setItem('tasks', JSON.stringify(allTasks)); // Save filtered tasks to local storage
+//         showNotification('Completed tasks cleared!','green'); //! Function call: To show completed tasks cleared message
+//         renderTasks(); //! Function call: To Re-render tasks after clearing completed tasks
+//         taskCountText.textContent = `You have completed 0 tasks!`;
+//     }
     
-}
+// }
 //* 19.Function to check if task is already present
 function isTaskAlreadyExists(taskText, currentId) { 
     let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -387,4 +387,126 @@ function showNotification(text,color){
         notification.classList.remove(`.notification`);
         notification.style.visibility = 'hidden';
     }, 2000);
+}
+
+// Function to create and show a toast message
+function showToast(message, onConfirm, onCancel) {
+    const toastContainer = document.getElementById('toast-container');
+    
+    const toastMessage = document.createElement('div');
+    toastMessage.className = 'toast-message';
+    
+    const messageText = document.createElement('span');
+    messageText.textContent = message;
+    
+    const confirmButton = document.createElement('button');
+    confirmButton.textContent = 'Yes';
+    confirmButton.onclick = () => {
+        onConfirm();
+        toastContainer.removeChild(toastMessage);
+    };
+    
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = 'No';
+    cancelButton.onclick = () => {
+        onCancel();
+        toastContainer.removeChild(toastMessage);
+    };
+    
+    toastMessage.appendChild(messageText);
+    toastMessage.appendChild(confirmButton);
+    toastMessage.appendChild(cancelButton);
+    
+    toastContainer.appendChild(toastMessage);
+}
+
+// Function to delete a task with confirmation
+function deleteTask(taskId) {
+    showToast('Are you sure you want to delete this task?', () => {
+        let allTasks = JSON.parse(localStorage.getItem('tasks'));
+        allTasks = allTasks.filter(task => task.id !== taskId);
+        localStorage.setItem('tasks', JSON.stringify(allTasks));
+        showNotification('Task deleted successfully', 'green');
+        renderTasks();
+    }, () => {
+        showNotification('Task deletion canceled', 'red');
+    });
+}
+
+// Function to clear all tasks from screen and local storage based on filter with confirmation
+function clearAllTasks() {
+    const filter = localStorage.getItem('statusFilter');
+    let message = '';
+
+    switch (filter) {
+        case 'all':
+            message = 'Are you sure you want to clear all tasks?';
+            break;
+        case 'inprogress':
+            message = 'Are you sure you want to clear all in-progress tasks?';
+            break;
+        case 'completed':
+            message = 'Are you sure you want to clear all completed tasks?';
+            break;
+    }
+
+    showToast(message, () => {
+        let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        
+        if (filter === 'all') {
+            localStorage.removeItem('tasks');
+            localStorage.removeItem('taskIdCounter');
+            taskIdCounter = 0;
+        } else if (filter === 'inprogress') {
+            allTasks = allTasks.filter(task => task.completed);
+            localStorage.setItem('tasks', JSON.stringify(allTasks));
+        } else if (filter === 'completed') {
+            allTasks = allTasks.filter(task => !task.completed);
+            localStorage.setItem('tasks', JSON.stringify(allTasks));
+        }
+
+        showNotification(`${filter.charAt(0).toUpperCase() + filter.slice(1)} tasks cleared!`, 'green');
+        renderTasks();
+    }, () => {
+        showNotification('Task clearing canceled', 'red');
+    });
+}
+// Modify the saveTask function to include confirmation
+function saveTask(taskId) {
+    let allTasks = JSON.parse(localStorage.getItem('tasks'));
+    let taskText = document.querySelector(`#onetask-${taskId}`);
+    let editedText = taskText.value.trim().replace(/\s+/g, ' ');
+
+    const task = allTasks.find(task => task.id === taskId);
+
+    // Validation for editing the task
+    if (editedText === '') {  // Empty task
+        showNotification('Task cannot be empty!!','#b80d0d');
+        taskText.style.borderBottom = '2px solid red';
+        return;
+    }
+
+    // Validation for existing task
+    if (isTaskAlreadyExists(editedText, taskId)) {
+        showNotification('Task already exists!','#b80d0d');
+        taskText.style.borderBottom = '2px solid red';
+        return;
+    }
+
+    const confirmSave = () => {
+        // Save edited task
+        task.text = editedText;
+        localStorage.setItem('tasks', JSON.stringify(allTasks));
+
+        showNotification('Task updated successfully!', 'green');
+        toggleSave(taskId);
+        renderTasks();
+    };
+
+    const cancelSave = () => {
+        cancelEdit(taskId);
+        showNotification('Task saving canceled', 'red');
+    };
+
+    showToast('Are you sure you want to save changes to this task?', confirmSave, cancelSave);
 }
