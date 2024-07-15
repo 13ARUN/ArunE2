@@ -83,9 +83,7 @@ header{
     width: 84%;
     font-size: 18px;
 }
-.taskinput input::placeholder {
-    font-style: italic;
-}
+
 /** 1.2.1.2 Task add button*/
 .taskinput button{
     border: none;

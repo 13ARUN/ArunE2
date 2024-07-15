@@ -165,7 +165,7 @@ function createTaskElement(task) {
                             <img src="img/wrong.png" alt="cancel icon">
                             </button>  <!--//? Cancel button-->
                         </div>`;
-    return aTask; // Retuen the aTask to append in ul as a child
+    return aTask; // Return the aTask to append in ul as a child
 }
 
 //* 10.Function to toggle visibility of task list and no tasks page
