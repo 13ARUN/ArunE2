@@ -1,7 +1,8 @@
 //* 1.Required functional elements 
 const inputBox = document.querySelector('#input'), //? Task input field
+      addButton = document.querySelector('#add'), //? Add Button
       taskList = document.querySelector('#listtask'), //? List container ul element
-      clearButton = document.querySelector('#clearButton'), //? Clear button
+      clearButton = document.querySelector('#clear'), //? Clear button
       statusFilter = document.querySelector('#statusFilter'), //? Filter tasks dropdown
       taskCountText = document.querySelector('.tasktext h3'), //? Task couter display field
       notification = document.querySelector('.notification'); //? Notification message 
@@ -48,6 +49,11 @@ function renderTasks() {
 
     //* Remove error highlight */
     inputBox.style.borderBottom = 'none';
+
+    inputBox.disabled = false;
+    statusFilter.disabled = false;
+    clearButton.disabled = false;
+    addButton.disabled = false;
 
     //* Get existing tasks and filter value from local storage
     let allTasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : []; //Get tasks if it exists in local storage else empty
@@ -148,30 +154,26 @@ function createTaskElement(task) {
                         <div class="eachtask">
                             <input type="text" id="onetask-${task.id}" value="${task.text}" maxlength="150" readonly> <!--//? Task content Default:readonly-->
                         </div>
-                        <!--<div class="cbox">
-                            <button id="checkbox-${task.id}" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
-                            <img src="${task.completed ? 'img/done.png' : 'img/notdone.png'}" alt="checkbox">
-                            </button>
-                        </div> -->
+                        
                         <div class="editdel" id="edit-${task.id}">
-                            <button id="checkbox-${task.id}" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
+                            <button id="checkbox-${task.id}" title="Status" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
                             <img src="${task.completed ? 'img/done.png' : 'img/notdone.png'}" alt="checkbox">
                             </button>
-                            <button onclick="toggleEdit(${task.id})"> <!--//! Function call: To enable editing of task content-->
+                            <button title="Edit Task" onclick="toggleEdit(${task.id})"> <!--//! Function call: To enable editing of task content-->
                             <img src="img/edit.png" alt="edit icon">
                             </button>  <!--//? Edit button-->
-                            <button onclick="deleteTask(${task.id})"> <!--//! Function call: To delete a task from task list-->
+                            <button title="Delete Task" onclick="deleteTask(${task.id})"> <!--//! Function call: To delete a task from task list-->
                             <img src="img/delete.png" alt="delete icon">
                             </button>  <!--//? Delete button-->
                         </div>
                         <div class="savecancel" id="save-${task.id}" style="display:none">
-                            <button id="checkbox-${task.id}" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
+                            <button id="checkbox-${task.id}" title="Status"  disabled="true" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
                             <img src="${task.completed ? 'img/done.png' : 'img/notdone.png'}" alt="checkbox">
                             </button>
-                            <button onclick="saveTask(${task.id})">  <!--//! Function call: To save edited task-->
+                            <button  title="Save Task" onclick="saveTask(${task.id})">  <!--//! Function call: To save edited task-->
                             <img src="img/save.png" alt="save icon">
                             </button>  <!--//? Save button-->
-                            <button onclick="cancelEdit(${task.id})"> <!--//! Function call: To cancel editing a task-->
+                            <button  title="Cancel Edit" onclick="cancelEdit(${task.id})"> <!--//! Function call: To cancel editing a task-->
                             <img src="img/wrong.png" alt="cancel icon">
                             </button>  <!--//? Cancel button-->
                         </div>`;
@@ -204,6 +206,13 @@ function deleteTask(taskId) {
 
 //* 12.Function to toggle from edit/delete to save/cancel
 function toggleEdit(taskId) {
+
+    inputBox.disabled = true;
+    addButton.disabled = true;
+    statusFilter.disabled = true;
+    clearButton.disabled = true;
+
+    inputBox.style.borderBottom = 'none';
 
     //* Function to disable other task buttons
     const allEditButtons = document.querySelectorAll('.editdel button');
@@ -248,6 +257,8 @@ function toggleSave(taskId){
 
     //* Visual cue for edit disable
     taskText.style.borderStyle = 'none'; // Remove highlight on the bottom border
+
+    
 }
 
 //* 14.Function to toggle between edit/delete and save/cancel
@@ -290,6 +301,8 @@ function saveTask(taskId) {
     localStorage.setItem('tasks', JSON.stringify(alltasks));
 
     showNotification('Task updated sucessfully!','green'); //! Function call: To show task updated message
+
+    
     
     toggleSave(taskId); //! Function call: To toggle to edit/delete div
     renderTasks(); //! Function call: To Re-render tasks after saving
@@ -310,6 +323,12 @@ function cancelEdit(taskId) {
     allEditButtons.forEach(button => {
         button.disabled = false; // Enables edit and delete buttons
     });    
+
+    inputBox.disabled = false;
+    statusFilter.disabled = false;
+    clearButton.disabled = false;
+    addButton.disabled = false;
+    
 }
 
 //* 17.Function to change completed status when checkbox is clicked
@@ -323,17 +342,36 @@ function checkBox(taskId) {
     renderTasks(); //! Function call: To Re-render tasks after changing status
 }
 
-//* 18.Function to clear all tasks from screen and local storage
+//* 18.Function to clear all tasks from screen and local storage based on filter
 function clearAllTasks() {
 
-    taskList.innerHTML = ''; // Clear task list on screen
-    localStorage.removeItem('tasks'); // Clear local storage
-    localStorage.removeItem('taskIdCounter'); // Clear the taskIdCounter from local storage
-    renderTasks(); //! Function call: To Re-render tasks after clearing all tasks
-    showNotification('All tasks cleared!','green'); //! Function call: To show all tasks cleared message
-    taskIdCounter = 0; // Reset the counter
-    taskCountText.textContent = `You have no tasks here!`; // Update task count text  
+    let allTasks = JSON.parse(localStorage.getItem('tasks')) || []; // Get all tasks from local storage
+    const filter = statusFilter.value; // Get current filter value
+
+    if (filter === 'all') {
+        taskList.innerHTML = ''; // Clear task list on screen
+        localStorage.removeItem('tasks'); // Clear local storage
+        localStorage.removeItem('taskIdCounter'); // Clear the taskIdCounter from local storage
+        showNotification('All tasks cleared!','green'); //! Function call: To show all tasks cleared message
+        taskIdCounter = 0; // Reset the counter
+        renderTasks(); //! Function call: To Re-render tasks after clearing all tasks
+    } else if (filter === 'inprogress') {
+        allTasks = allTasks.filter(task => task.completed); // Filter out completed tasks
+        localStorage.setItem('tasks', JSON.stringify(allTasks)); // Save filtered tasks to local storage
+        showNotification('In-progress tasks cleared!','green'); //! Function call: To show In progress tasks cleared message
+        renderTasks(); //! Function call: To Re-render tasks after clearing In progress tasks
+        taskCountText.textContent = `You have 0 tasks to do!`;
+        
+    } else if (filter === 'completed') {
+        allTasks = allTasks.filter(task => !task.completed); // Filter out in-progress tasks
+        localStorage.setItem('tasks', JSON.stringify(allTasks)); // Save filtered tasks to local storage
+        showNotification('Completed tasks cleared!','green'); //! Function call: To show completed tasks cleared message
+        renderTasks(); //! Function call: To Re-render tasks after clearing completed tasks
+        taskCountText.textContent = `You have completed 0 tasks!`;
+    }
+    
 }
+
 
 //* 19.Function to check if task is already present
 function isTaskAlreadyExists(taskText, currentId) { 

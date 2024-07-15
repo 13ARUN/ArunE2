@@ -148,10 +148,20 @@ header{
     border: none;
     outline: none;
     border-radius: 20px;
-    padding: 2%;
     cursor: pointer;
     font-size: 16px;
 }
+
+
+.taskfilterclr select{
+    padding-right: 0%;
+}
+.taskfilterclr option{
+    font-weight: bold;
+}
+
+
+
 
 /** 1.4 No tasks section */
 .notasks{
@@ -238,26 +248,10 @@ ul::-webkit-scrollbar-thumb {
     margin-top: 1%;
     margin-bottom: 1%;
 }
-/** 1.6.1 Check boc */
-.cbox{
-    width: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    
-} 
-.cbox button{
-    height: 50%;
-    width: 60%;
-    cursor: pointer;  
-}
-.cbox img{
-    width: 100%;
-    height: 100%;
-    object-fit:contain;
-}
-/** 1.6.2 Task content */
+
+
+
+/** 1.6.1 Task content */
 .eachtask{
     width: 73%;
     height: 100%;
@@ -266,7 +260,7 @@ ul::-webkit-scrollbar-thumb {
     align-items: center;
     padding-left: 3%;
 }
-/** 1.6.2.1  task Input in each task*/
+/** 1.6.1.1  task Input in each task*/
 .eachtask input{
     white-space: nowrap;
     overflow: hidden;
@@ -278,7 +272,7 @@ ul::-webkit-scrollbar-thumb {
     height: 50%;
     font-size: 20px;
 }
-/** 1.6.3 Edit and Delete butons */
+/** 1.6.2 Edit and Delete butons */
 .editdel{
     width: 25%;
     display: flex;
@@ -296,14 +290,14 @@ ul::-webkit-scrollbar-thumb {
 .editdel button:hover{
     background-color: #bfacd8;
 }
-/** 1.6.3.1 EditDel image icon */
+/** 1.6.2.1 EditDel image icon */
 .editdel img{
     width: 60%;
     height: 100%;
     padding: 5%;
     object-fit:contain;
 }
-/** 1.6.4 Save and cancel button */
+/** 1.6.3 Save and cancel button */
 .savecancel{
     width: 25%;
     display: flex;
@@ -321,7 +315,7 @@ ul::-webkit-scrollbar-thumb {
 .savecancel button:hover{
     background-color: #bfacd8;
 }
-/** 1.6.4.1 SaveCancel image icon */
+/** 1.6.3.1 SaveCancel image icon */
 .savecancel img{
     width: 60%;
     height: 100%;
