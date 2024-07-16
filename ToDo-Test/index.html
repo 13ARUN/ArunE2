@@ -33,18 +33,17 @@
             <div class="tasktext">
                 <!-- Task count display -->
                 <div class="taskfilterclr">
-                    <label> 
-                        <input type="radio" name="taskFilter" id="all" value="all" onchange="filterTasks('all')" checked>
-                        <span>All</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="taskFilter" id="inprogress" value="inprogress" onchange="filterTasks('inprogress')">
-                        <span>In Progress</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="taskFilter" id="completed" value="completed" onchange="filterTasks('completed')">
-                        <span>Completed</span>
-                    </label>
+                    <input type="radio" name="taskFilter" id="all" value="all" onchange="filterTasks('all')" >
+                    <label for="all" title="All">All</label>
+                
+                    
+                    <input type="radio" name="taskFilter" id="inprogress" value="inprogress" onchange="filterTasks('inprogress')">
+                    <label for="inprogress" title="In Progress">In Progress</label>
+                    
+                
+                    <input type="radio" name="taskFilter" id="completed" value="completed" onchange="filterTasks('completed')">
+                    <label for="completed" title="Completed">Completed</label>
+                
                 </div>
             </div>
 
@@ -75,7 +74,7 @@
                 <div class="count">
                     <h3>You have n tasks to do!</h3>
                 </div> 
-                <button title="clear all" id="clear" onclick="clearAllTasks()">Clear Tasks</button> <!-- Clear all tasks button -->
+                <button title="Clear" id="clear" onclick="clearAllTasks()">Clear Tasks</button> <!-- Clear all tasks button -->
             </div>
            
         </div>

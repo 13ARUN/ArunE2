@@ -148,7 +148,7 @@ function filterTasks(tasks, filter) {
 function createTaskElement(task) {
     let aTask = document.createElement("div"); //? Create div atask to add elements for each task
     aTask.classList.add("atask"); // Add a class name "atask"
-    aTask.style.opacity = task.completed ? '0.6' : '1';
+    aTask.style.opacity = task.completed ? '0.4' : '1';
     aTask.innerHTML = ` 
                         <div class="eachtask">
                             <input type="text" id="onetask-${task.id}" value="${task.text}" maxlength="150" readonly> <!--//? Task content Default:readonly-->
@@ -458,17 +458,16 @@ function showToast(message, onConfirm, onCancel) {
     
     toastContainer.appendChild(toastMessage);
 
-    // Add blur effect to the background container
-    document.getElementsByClassName('todo').classList.add('blur-background');
+    toastContainer.style.display = 'flex'; 
+
+    
 }
 
 // Function to remove toast message
 function removeToast(toastMessage) {
     const toastContainer = document.getElementById('toast-container');
     toastContainer.removeChild(toastMessage);
-
-    // Remove blur effect from the background container
-    document.getElementsByClassName('todo').classList.remove('blur-background');
+    toastContainer.style.display = 'none';   
 }
 
 
