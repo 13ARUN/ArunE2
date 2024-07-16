@@ -196,14 +196,17 @@ function toggleTaskListVisibility(tasks) {
 }
 
 //* 11.Function to delete a task
-// function deleteTask(taskId) {
-//     let allTasks = JSON.parse(localStorage.getItem('tasks')); //? Get the tasks from local storage
-//     allTasks = allTasks.filter(task => task.id !== taskId); // Select the task(s) other that selected id 
-//     localStorage.setItem('tasks', JSON.stringify(allTasks));
-
-//     showNotification('Task deleted sucessfully','green'); //! Function call: To show task deleted message
-//     renderTasks(); //! Function call: To Re-render tasks after deletion
-// }
+function deleteTask(taskId) {
+    showToast('Are you sure you want to delete this task?', () => { //! Function call: To show Delete confirmation message
+        let allTasks = JSON.parse(localStorage.getItem('tasks')); //? Get the tasks from local storage
+        allTasks = allTasks.filter(task => task.id !== taskId);
+        localStorage.setItem('tasks', JSON.stringify(allTasks));
+        showNotification('Task deleted successfully', 'green'); //! Function call: To show task deleted message
+        renderTasks(); //! Function call: To Re-render tasks after deletion
+    }, () => {
+        showNotification('Task deletion canceled', 'red'); //! Function call: To show deletion canceled message
+    });
+}
 
 //* 12.Function to toggle from edit/delete to save/cancel
 function toggleEdit(taskId) {
@@ -219,6 +222,12 @@ function toggleEdit(taskId) {
     allEditButtons.forEach(button => {
         button.disabled = true; // Disables edit and delete buttons of other tasks
     });
+
+     //* Disable radio buttons
+     const radioButtons = document.querySelectorAll('input[name="taskFilter"]');
+     radioButtons.forEach(radio => {
+         radio.disabled = true; // Disable radio buttons
+     });
 
     //* Display save and cancel buttons
     toggleTaskControls(taskId, 'edit', 'save'); //! Function call: To toggle to save and cancel buttons
@@ -274,37 +283,46 @@ function toggleTaskControls(taskId, from, to) {
 }
 
 //* 15.Function to save edited task
-// function saveTask(taskId) {
+function saveTask(taskId) {
 
-//     //* Get the edited and original task text
-//     let alltasks = JSON.parse(localStorage.getItem('tasks'));
-//     let taskText = document.querySelector(`#onetask-${taskId}`);
-//     let editedText = taskText.value.trim().replace(/\s+/g, ' '); //? Trim spaces in the input
-//     let task = alltasks.find(task => task.id === taskId);
+    //* Get the edited and original task text
+    let allTasks = JSON.parse(localStorage.getItem('tasks'));
+    let taskText = document.querySelector(`#onetask-${taskId}`);
+    let editedText = taskText.value.trim().replace(/\s+/g, ' ');
 
-//     //* Validation for editing the task
-//     if (editedText === '') {  // Empty task
-//         showNotification('Task cannot be empty!!','#b80d0d'); //! Function call: To show empty task message
-//         taskText.style.borderBottom = '2px solid red';
-//         return;
-//     }
+    const task = allTasks.find(task => task.id === taskId);
 
-//     //*Validation for existing task
-//     if (isTaskAlreadyExists(editedText, taskId)) {  //! Function call: To check the task content already exists
-//         showNotification('Task already exists!','#b80d0d'); //! Function call: To show task exist error message
-//         taskText.style.borderBottom = '2px solid red'; 
-//         return;
-//     }
+    //* Validation for editing the task
+    if (editedText === '') {  // Empty task
+        showNotification('Task cannot be empty!!','#b80d0d'); //! Function call: To show empty task message
+        taskText.style.borderBottom = '2px solid red';
+        return;
+    }
 
-//     //* Save edited task
-//     task.text = editedText;
-//     localStorage.setItem('tasks', JSON.stringify(alltasks));
+    //* Validation for existing task
+    if (isTaskAlreadyExists(editedText, taskId)) { //! Function call: To check the task content already exists
+        showNotification('Task already exists!','#b80d0d'); //! Function call: To show task exist error message
+        taskText.style.borderBottom = '2px solid red';
+        return;
+    }
 
-//     showNotification('Task updated sucessfully!','green'); //! Function call: To show task updated message
-//     toggleSave(taskId); //! Function call: To toggle to edit/delete div
-//     renderTasks(); //! Function call: To Re-render tasks after saving
-    
-// }
+    const confirmSave = () => {
+        //* Save edited task
+        task.text = editedText;
+        localStorage.setItem('tasks', JSON.stringify(allTasks));
+
+        showNotification('Task updated successfully!', 'green'); //! Function call: To show task updated message
+        toggleSave(taskId); //! Function call: To toggle to edit/delete div
+        renderTasks(); //! Function call: To Re-render tasks after saving
+    };
+
+    const cancelSave = () => {
+        cancelEdit(taskId);
+        showNotification('Task saving canceled', 'red');
+    };
+
+    showToast('Are you sure you want to save changes to this task?', confirmSave, cancelSave);
+}
 
 //* 16.Function to cancel editing task
 function cancelEdit(taskId) {
@@ -319,7 +337,13 @@ function cancelEdit(taskId) {
     const allEditButtons = document.querySelectorAll('.editdel button');
     allEditButtons.forEach(button => {
         button.disabled = false; // Enables edit and delete buttons
-    });    
+    });  
+    
+    //* Enable radio buttons
+    const radioButtons = document.querySelectorAll('input[name="taskFilter"]');
+    radioButtons.forEach(radio => {
+        radio.disabled = false; // Enable radio buttons
+    });
 
     inputBox.disabled = false;
     clearButton.disabled = false;
@@ -340,73 +364,6 @@ function checkBox(taskId) {
 
 
 //* 18.Function to clear all tasks from screen and local storage based on filter
-// function clearAllTasks() {
-
-//     let allTasks = JSON.parse(localStorage.getItem('tasks')) || []; // Get all tasks from local storage
-//     const filter = localStorage.getItem('statusFilter'); // Get filter value    taskList.innerHTML = ''; // Clear task list on screen
-   
-//     if (filter === 'all') {
-//         taskList.innerHTML = ''; // Clear task list on screen
-//         localStorage.removeItem('tasks'); // Clear local storage
-//         localStorage.removeItem('taskIdCounter'); // Clear the taskIdCounter from local storage
-//         showNotification('All tasks cleared!','green'); //! Function call: To show all tasks cleared message
-//         taskIdCounter = 0; // Reset the counter
-//         renderTasks(); //! Function call: To Re-render tasks after clearing all tasks
-//     } else if (filter === 'inprogress') {
-//         allTasks = allTasks.filter(task => task.completed); // Filter out completed tasks
-//         localStorage.setItem('tasks', JSON.stringify(allTasks)); // Save filtered tasks to local storage
-//         showNotification('In-progress tasks cleared!','green'); //! Function call: To show In progress tasks cleared message
-//         renderTasks(); //! Function call: To Re-render tasks after clearing In progress tasks
-//         taskCountText.textContent = `You have 0 tasks to do!`;
-        
-//     } else if (filter === 'completed') {
-//         allTasks = allTasks.filter(task => !task.completed); // Filter out in-progress tasks
-//         localStorage.setItem('tasks', JSON.stringify(allTasks)); // Save filtered tasks to local storage
-//         showNotification('Completed tasks cleared!','green'); //! Function call: To show completed tasks cleared message
-//         renderTasks(); //! Function call: To Re-render tasks after clearing completed tasks
-//         taskCountText.textContent = `You have completed 0 tasks!`;
-//     }
-    
-// }
-//* 19.Function to check if task is already present
-function isTaskAlreadyExists(taskText, currentId) { 
-    let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    return allTasks.some(task => task.text.toLowerCase() === taskText.toLowerCase() && task.id !== currentId); //? Return true is exists
-}
-//* 20.Function to display notification
-function showNotification(text,color){
-
-    //* Assign text and background color
-    notification.textContent = text;
-    notification.style.backgroundColor = color;
-
-    notification.style.visibility = 'visible'; // To display
-    notification.classList.add('.notification'); // To add styling
-    setTimeout(() => {
-        notification.textContent = "";
-        notification.classList.remove(`.notification`);
-        notification.style.visibility = 'hidden';
-    }, 2000);
-}
-
-
-
-// Function to delete a task with confirmation
-function deleteTask(taskId) {
-    showToast('Are you sure you want to delete this task?', () => {
-        let allTasks = JSON.parse(localStorage.getItem('tasks'));
-        allTasks = allTasks.filter(task => task.id !== taskId);
-        localStorage.setItem('tasks', JSON.stringify(allTasks));
-        showNotification('Task deleted successfully', 'green');
-        renderTasks();
-    }, () => {
-        showNotification('Task deletion canceled', 'red');
-    });
-}
-
-
-
-// Function to clear all tasks from screen and local storage based on filter with confirmation
 function clearAllTasks() {
     const filter = localStorage.getItem('statusFilter');
     let message = '';
@@ -445,7 +402,28 @@ function clearAllTasks() {
     });
 }
 
-// Function to create and show a toast message
+//* 19.Function to check if task is already present
+function isTaskAlreadyExists(taskText, currentId) { 
+    let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    return allTasks.some(task => task.text.toLowerCase() === taskText.toLowerCase() && task.id !== currentId); //? Return true is exists
+}
+//* 20.Function to display notification
+function showNotification(text,color){
+
+    //* Assign text and background color
+    notification.textContent = text;
+    notification.style.backgroundColor = color;
+
+    notification.style.visibility = 'visible'; // To display
+    notification.classList.add('.notification'); // To add styling
+    setTimeout(() => {
+        notification.textContent = "";
+        notification.classList.remove(`.notification`);
+        notification.style.visibility = 'hidden';
+    }, 2000);
+}
+
+//* Function to create and show a toast message
 function showToast(message, onConfirm, onCancel) {
     const toastContainer = document.getElementById('toast-container');
     
@@ -455,6 +433,9 @@ function showToast(message, onConfirm, onCancel) {
     const messageText = document.createElement('span');
     messageText.textContent = message;
     
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'button-container';
+
     const confirmButton = document.createElement('button');
     confirmButton.textContent = 'Yes';
     confirmButton.onclick = () => {
@@ -469,69 +450,29 @@ function showToast(message, onConfirm, onCancel) {
         removeToast(toastMessage);
     };
     
+    buttonContainer.appendChild(confirmButton);
+    buttonContainer.appendChild(cancelButton);
+
     toastMessage.appendChild(messageText);
-    toastMessage.appendChild(confirmButton);
-    toastMessage.appendChild(cancelButton);
+    toastMessage.appendChild(buttonContainer);
     
     toastContainer.appendChild(toastMessage);
-    
-    // Add blur effect to the main content and the overlay
-    document.body.classList.add('blurred');
 
-    const blurredOverlay = document.createElement('div');
-    blurredOverlay.className = 'blurred-overlay';
-    document.body.appendChild(blurredOverlay);
+    // Add blur effect to the background container
+    document.getElementsByClassName('todo').classList.add('blur-background');
 }
 
-// Function to remove toast message and blur effect
+// Function to remove toast message
 function removeToast(toastMessage) {
     const toastContainer = document.getElementById('toast-container');
     toastContainer.removeChild(toastMessage);
 
-    document.body.classList.remove('blurred');
-
-    const blurredOverlay = document.querySelector('.blurred-overlay');
-    if (blurredOverlay) {
-        document.body.removeChild(blurredOverlay);
-    }
+    // Remove blur effect from the background container
+    document.getElementsByClassName('todo').classList.remove('blur-background');
 }
+
+
+
+
 
 // Modify the saveTask function to include confirmation
-function saveTask(taskId) {
-    let allTasks = JSON.parse(localStorage.getItem('tasks'));
-    let taskText = document.querySelector(`#onetask-${taskId}`);
-    let editedText = taskText.value.trim().replace(/\s+/g, ' ');
-
-    const task = allTasks.find(task => task.id === taskId);
-
-    // Validation for editing the task
-    if (editedText === '') {  // Empty task
-        showNotification('Task cannot be empty!!','#b80d0d');
-        taskText.style.borderBottom = '2px solid red';
-        return;
-    }
-
-    // Validation for existing task
-    if (isTaskAlreadyExists(editedText, taskId)) {
-        showNotification('Task already exists!','#b80d0d');
-        taskText.style.borderBottom = '2px solid red';
-        return;
-    }
-
-    const confirmSave = () => {
-        // Save edited task
-        task.text = editedText;
-        localStorage.setItem('tasks', JSON.stringify(allTasks));
-
-        showNotification('Task updated successfully!', 'green');
-        toggleSave(taskId);
-        renderTasks();
-    };
-
-    const cancelSave = () => {
-        cancelEdit(taskId);
-        showNotification('Task saving canceled', 'red');
-    };
-
-    showToast('Are you sure you want to save changes to this task?', confirmSave, cancelSave);
-}
