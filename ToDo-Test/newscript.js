@@ -6,42 +6,39 @@ const inputBox = document.querySelector('#input'), //? Task input field
       taskCountText = document.querySelector('.count h3'), //? Task couter display field
       notification = document.querySelector('.notification'); //? Notification message 
 
-
-
-//* 3.Global variable for saving task with ID in local storage
+//* 2.Global variable for saving task with ID in local storage
 let taskIdCounter = localStorage.getItem('taskIdCounter') ? parseInt(localStorage.getItem('taskIdCounter')) : 0; //? ID counter variable for tasks
 
-//* 4.1 Event listener for DOMContentLoaded to render tasks from local storage on page load based on filter
+//* 3.Event listeners
+
+//* 3.1 Event listener for DOMContentLoaded to render tasks from local storage on page load based on filter
 document.addEventListener('DOMContentLoaded', () => { // Load existing tasks on page load
     const savedFilter = localStorage.getItem('statusFilter') || 'all';
     document.querySelector(`input[value="${savedFilter}"]`).checked = true;
     renderTasks(savedFilter); // Render tasks from local storage
 });
 
-//* 4.2 Event listner for rendering tasks based on changed filter
+//* 3.2 Event listner for rendering tasks based on changed filter
 document.querySelectorAll('input[name="taskFilter"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
         const filter = e.target.value;
-        localStorage.setItem('statusFilter', filter);
+        localStorage.setItem('statusFilter', filter); //? Store filter value in Local Storage
         renderTasks(filter);
     });
 });
 
-//* 4.3 Event listner for removing focus on task input on typing
+//* 3.3 Event listner for removing error focus on task input on typing
 inputBox.addEventListener('input', () => {
-    inputBox.style.borderBottom = 'none';
+    inputBox.style.borderBottom = 'none'; // Remove border style when typed
 });
 
+//* 3.4 Event listner for remove error focus when not focused
 inputBox.addEventListener('blur', () => {
     inputBox.style.borderBottom = 'none'; // Remove border style when not focused
 });
 
-//* 5.Function to render tasks 
+//* 4.Function to render tasks 
 function renderTasks() {
-
-    inputBox.disabled = false;
-    clearButton.disabled = false;
-    addButton.disabled = false;
 
     //* Get existing tasks and filter value from local storage
     let allTasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : []; //Get tasks if it exists in local storage else empty
@@ -60,7 +57,7 @@ function renderTasks() {
    
     toggleTaskListVisibility(allTasks);  //! Function call: To toggle visibility of task list and no tasks page
 }
-//* 6.Function to add a new task
+//* 5.Function to add a new task
 function addTask(){
 
     //* Input task validation
@@ -81,7 +78,9 @@ function addTask(){
         showNotification('Task already exists!','#b80d0d'); //! Function call: To display existing task error message
         inputBox.focus();
         inputBox.style.borderBottom = '2px solid red';
-    }else{ 
+    }
+    // When all validations are true
+    else{ 
         // Create a new task as object to add to DOM
         let task = {
             id: taskIdCounter++, //? Task ID
@@ -91,9 +90,11 @@ function addTask(){
         // Add new task to local storage
         let allTasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
         allTasks.push(task); // Add the new task
+
         localStorage.setItem('tasks', JSON.stringify(allTasks)); // Save the updated tasks
         localStorage.setItem('taskIdCounter', taskIdCounter); // Save the updated counter
         localStorage.setItem('statusFilter', 'all');
+
         showNotification('Task added sucessfully','green'); //! Function call: To show task added message
         const statusFilter = document.querySelector('input[name="taskFilter"][value="all"]');
         statusFilter.checked = true;
@@ -101,6 +102,41 @@ function addTask(){
     }
     inputBox.value = ""; //? Empty contents of input field 
     inputBox.focus();
+}
+
+//* 6.Function to create a task element
+function createTaskElement(task) {
+    let aTask = document.createElement("div"); //? Create div atask to add elements for each task
+    aTask.classList.add("atask"); // Add a class name "atask"
+    aTask.style.opacity = task.completed ? '0.6' : '1';
+    aTask.innerHTML = ` 
+                        <div class="eachtask">
+                            <input type="text" id="onetask-${task.id}" value="${task.text}" maxlength="150" readonly> <!--//? Task content Default:readonly-->
+                        </div>
+                        
+                        <div class="editdel" id="edit-${task.id}">
+                            <button id="checkbox-${task.id}" title="Status" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
+                            <img src="${task.completed ? 'img/done.png' : 'img/notdone.png'}" alt="checkbox">
+                            </button>
+                            <button title="Edit Task" onclick="${task.completed ? " " : `toggleEdit(${task.id})`}"> <!--//! Function call: To enable editing of task content-->
+                            <img src="img/edit.png" alt="edit icon">
+                            </button>  <!--//? Edit button-->
+                            <button title="Delete Task" onclick="deleteTask(${task.id})"> <!--//! Function call: To delete a task from task list-->
+                            <img src="img/delete.png" alt="delete icon">
+                            </button>  <!--//? Delete button-->
+                        </div>
+                        <div class="savecancel" id="save-${task.id}" style="display:none">
+                            <button id="checkbox-${task.id}" title="Status"  disabled="true" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
+                            <img src="${task.completed ? 'img/done.png' : 'img/notdone.png'}" alt="checkbox">
+                            </button>
+                            <button  title="Save Task" onclick="saveTask(${task.id})">  <!--//! Function call: To save edited task-->
+                            <img src="img/save.png" alt="save icon">
+                            </button>  <!--//? Save button-->
+                            <button  title="Cancel Edit" onclick="cancelEdit(${task.id})"> <!--//! Function call: To cancel editing a task-->   
+                            <img src="img/wrong.png" alt="cancel icon">
+                            </button>  <!--//? Cancel button-->
+                        </div>`;
+    return aTask; // Return the aTask to append in ul as a child
 }
 
 
@@ -138,50 +174,14 @@ function filterTasks(tasks, filter) {
     }
 }
 
-
-
-//* 9.Function to create a task element
-function createTaskElement(task) {
-    let aTask = document.createElement("div"); //? Create div atask to add elements for each task
-    aTask.classList.add("atask"); // Add a class name "atask"
-    aTask.style.opacity = task.completed ? '0.6' : '1';
-    aTask.innerHTML = ` 
-                        <div class="eachtask">
-                            <input type="text" id="onetask-${task.id}" value="${task.text}" maxlength="150" readonly> <!--//? Task content Default:readonly-->
-                        </div>
-                        
-                        <div class="editdel" id="edit-${task.id}">
-                            <button id="checkbox-${task.id}" title="Status" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
-                            <img src="${task.completed ? 'img/done.png' : 'img/notdone.png'}" alt="checkbox">
-                            </button>
-                            <button title="Edit Task" onclick="toggleEdit(${task.id})"> <!--//! Function call: To enable editing of task content-->
-                            <img src="img/edit.png" alt="edit icon">
-                            </button>  <!--//? Edit button-->
-                            <button title="Delete Task" onclick="deleteTask(${task.id})"> <!--//! Function call: To delete a task from task list-->
-                            <img src="img/delete.png" alt="delete icon">
-                            </button>  <!--//? Delete button-->
-                        </div>
-                        <div class="savecancel" id="save-${task.id}" style="display:none">
-                            <button id="checkbox-${task.id}" title="Status"  disabled="true" onclick="checkBox(${task.id})" ${task.completed ? 'checked' : ''}>
-                            <img src="${task.completed ? 'img/done.png' : 'img/notdone.png'}" alt="checkbox">
-                            </button>
-                            <button  title="Save Task" onclick="saveTask(${task.id})">  <!--//! Function call: To save edited task-->
-                            <img src="img/save.png" alt="save icon">
-                            </button>  <!--//? Save button-->
-                            <button  title="Cancel Edit" onclick="cancelEdit(${task.id})"> <!--//! Function call: To cancel editing a task-->
-                            <img src="img/wrong.png" alt="cancel icon">
-                            </button>  <!--//? Cancel button-->
-                        </div>`;
-    return aTask; // Return the aTask to append in ul as a child
-}
-
 //* 10.Function to toggle visibility of task list and no tasks page
 function toggleTaskListVisibility(tasks) {
 
+    //* Elements to change visibility
     const noTasks = document.querySelector('.notasks'), //? No tasks page
-      showtask = document.querySelector('.tasklist'), //? Tasks page
-      taskActions = document.querySelector('.tasktext'); //? Task count & filter
-      countText = document.querySelector('.clear') //? clear button and count display field
+          showtask = document.querySelector('.tasklist'), //? Tasks page
+          taskActions = document.querySelector('.tasktext'); //? Task count & filter
+          countText = document.querySelector('.clear') //? clear button and count display field
 
     if (tasks.length === 0) {
         taskCountText.textContent = `You have no tasks here!`; // display when all tasks are deleted
@@ -197,9 +197,22 @@ function toggleTaskListVisibility(tasks) {
     }
 }
 
-//* 11.Function to delete a task
+//* 11.Function to change completed status when checkbox is clicked
+function checkBox(taskId) {
+
+    //* Change completed status 
+    let allTasks = JSON.parse(localStorage.getItem('tasks'));
+    let task = allTasks.find(task => task.id === taskId); // Find task to change status
+
+    task.completed = !task.completed; // Toggle true and false
+
+    localStorage.setItem('tasks', JSON.stringify(allTasks));
+    renderTasks(); //! Function call: To Re-render tasks after changing status
+}
+
+//* 12.Function to delete a task
 function deleteTask(taskId) {
-    showToast('Are you sure you want to delete this task?', () => { //! Function call: To show Delete confirmation message
+    showToast('Are you sure you want to delete this task?', () => { //! Function call: To ask for delete confirmation
         let allTasks = JSON.parse(localStorage.getItem('tasks')); //? Get the tasks from local storage
         allTasks = allTasks.filter(task => task.id !== taskId);
         localStorage.setItem('tasks', JSON.stringify(allTasks));
@@ -210,14 +223,15 @@ function deleteTask(taskId) {
     });
 }
 
-//* 12.Function to toggle from edit/delete to save/cancel
+//* 13.Function to toggle from edit/delete to save/cancel
 function toggleEdit(taskId) {
 
+    inputBox.style.borderBottom = 'none';
+
+    //* Disable other button actions
     inputBox.disabled = true;
     addButton.disabled = true;
     clearButton.disabled = true;
-
-    inputBox.style.borderBottom = 'none';
 
     //* Function to disable other task buttons
     const allEditButtons = document.querySelectorAll('.editdel button');
@@ -225,11 +239,11 @@ function toggleEdit(taskId) {
         button.disabled = true; // Disables edit and delete buttons of other tasks
     });
 
-     //* Disable radio buttons
-     const radioButtons = document.querySelectorAll('input[name="taskFilter"]');
-     radioButtons.forEach(radio => {
-         radio.disabled = true; // Disable radio buttons
-     });
+    //* Disable radio buttons
+    const radioButtons = document.querySelectorAll('input[name="taskFilter"]');
+    radioButtons.forEach(radio => {
+        radio.disabled = true; // Disable radio buttons
+    });
 
     //* Display save and cancel buttons
     toggleTaskControls(taskId, 'edit', 'save'); //! Function call: To toggle to save and cancel buttons
@@ -256,18 +270,13 @@ function toggleEdit(taskId) {
     });
 }
 
-//* 13.Function to toggle from save/cancel to edit/delete
+//* 14.Function to toggle from save/cancel to edit/delete
 function toggleSave(taskId){
 
-    //* Display edit and delete buttons
-    toggleTaskControls(taskId, 'save', 'edit'); //! Function call: To toggle to edit and delete buttons
-
-    //* Make task non-editable
-    let taskText = document.querySelector(`#onetask-${taskId}`);
-    taskText.setAttribute('readonly', 'true'); // Make it non-editable
-
-    //* Visual cue for edit disable
-    taskText.style.borderStyle = 'none'; // Remove highlight on the bottom border
+    //* Enable button actions
+    inputBox.disabled = false;
+    clearButton.disabled = false;
+    addButton.disabled = false;
 
     //* Enable the edit and delete buttons
     const allEditButtons = document.querySelectorAll('.editdel button');
@@ -281,13 +290,18 @@ function toggleSave(taskId){
         radio.disabled = false; // Enable radio buttons
     });
 
-    inputBox.disabled = false;
-    clearButton.disabled = false;
-    addButton.disabled = false;
-    
+    //* Display edit and delete buttons
+    toggleTaskControls(taskId, 'save', 'edit'); //! Function call: To toggle to edit and delete buttons
+
+    //* Make task non-editable
+    let taskText = document.querySelector(`#onetask-${taskId}`);
+    taskText.setAttribute('readonly', 'true'); // Make it non-editable
+
+    //* Visual cue for edit disable
+    taskText.style.borderStyle = 'none'; // Remove highlight on the bottom border    
 }
 
-//* 14.Function to toggle between edit/delete and save/cancel
+//* 15.Function to toggle between edit/delete and save/cancel
 function toggleTaskControls(taskId, from, to) {
 
     //* Select the respective div
@@ -299,7 +313,7 @@ function toggleTaskControls(taskId, from, to) {
     toDiv.style.display = 'flex';
 }
 
-//* 15.Function to save edited task
+//* 16.Function to save edited task
 function saveTask(taskId) {
 
     //* Get the edited and original task text
@@ -328,19 +342,17 @@ function saveTask(taskId) {
         task.text = editedText;
         localStorage.setItem('tasks', JSON.stringify(allTasks));
 
-        
-
         showNotification('Task updated successfully!', 'green'); //! Function call: To show task updated message
         toggleSave(taskId); //! Function call: To toggle to edit/delete div
         renderTasks(); //! Function call: To Re-render tasks after saving
     };
 
     const cancelSave = () => {
-        cancelEdit(taskId);
-        showNotification('Task saving canceled', 'red');
+        cancelEdit(taskId); //! Function call: To execute cancel function
+        showNotification('Task saving canceled', 'red'); //! Function call! To show save cancelled message
     };
 
-    showToast('Are you sure you want to save changes to this task?', confirmSave, cancelSave);
+    showToast('Are you sure you want to save changes to this task?', confirmSave, cancelSave);  //! Function call: To Ask for confirmation for saving
 }
 
 //* 16.Function to cancel editing task
@@ -353,25 +365,12 @@ function cancelEdit(taskId) {
     toggleSave(taskId); //! Function call: To toggle to edit/delete div
 }
 
-//* 17.Function to change completed status when checkbox is clicked
-function checkBox(taskId) {
-
-    //* Change completed status 
-    let allTasks = JSON.parse(localStorage.getItem('tasks'));
-    let task = allTasks.find(task => task.id === taskId); // Find task to change status
-    task.completed = !task.completed; // Toggle true and false
-    localStorage.setItem('tasks', JSON.stringify(allTasks));
-    renderTasks(); //! Function call: To Re-render tasks after changing status
-}
-
-
-//* 18.Function to clear all tasks from screen and local storage based on filter
+//* 17.Function to clear all tasks from screen and local storage based on filter
 function clearAllTasks() {
     const filter = localStorage.getItem('statusFilter');
     let message = '';
 
-    
-
+    //* Message for confirmation dialog
     switch (filter) {
         case 'all':
             message = 'Are you sure you want to clear all tasks?';
@@ -384,9 +383,10 @@ function clearAllTasks() {
             break;
     }
 
-    showToast(message, () => {
+    showToast(message, () => { //! Function call: To ask for clear confirmation
         let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
         
+        //* Clear tasks based on filter
         if (filter === 'all') {
             localStorage.removeItem('tasks');
             localStorage.removeItem('taskIdCounter');
@@ -399,19 +399,20 @@ function clearAllTasks() {
             localStorage.setItem('tasks', JSON.stringify(allTasks));
         }
 
-        showNotification(`${filter.charAt(0).toUpperCase() + filter.slice(1)} tasks cleared!`, 'green');
+        showNotification(`${filter.charAt(0).toUpperCase() + filter.slice(1)} tasks cleared!`, 'green'); //! Function call: To show tasks cleared message
         renderTasks();
     }, () => {
-        showNotification('Task clearing canceled', 'red');
+        showNotification('Task clearing canceled', 'red'); //! Function call: To show task cleared cancel message
     });
 }
 
-//* 19.Function to check if task is already present
+//* 18.Function to check if task is already present
 function isTaskAlreadyExists(taskText, currentId) { 
     let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     return allTasks.some(task => task.text.toLowerCase() === taskText.toLowerCase() && task.id !== currentId); //? Return true is exists
 }
-//* 20.Function to display notification
+
+//* 19.Function to display notification
 function showNotification(text,color){
 
     //* Assign text and background color
@@ -427,37 +428,37 @@ function showNotification(text,color){
     }, 2000);
 }
 
-// //* Function to create and show a toast message
+//* 20.Function to create and show a toast message
 function showToast(message, onConfirm, onCancel) {
+
+    // Toast container elements
     const toastContainer = document.getElementById('toast-container');
     const messageText = document.getElementById('message-text');
     const confirmButton = document.getElementById('confirm-button');
     const cancelButton = document.getElementById('cancel-button');
 
     // Show toast container
-    toastContainer.style.display = 'flex';
+    toggleToast(true);
 
     // Set message text
     messageText.textContent = message;
 
     // Assign event handlers
     confirmButton.onclick = () => {
-        onConfirm();
+        onConfirm(); //! Function call: Execute for yes
         toggleToast(false); // Hide toast after confirmation
     };
 
     cancelButton.onclick = () => {
-        onCancel();
+        onCancel(); //! Function call: Execute for no
         toggleToast(false); // Hide toast after cancellation
     };
-
-    
 }
 
-//* Function to hide toast message
+//* 21.Function to hide toast message
 function toggleToast(visible) {
     const toastContainer = document.getElementById('toast-container');
-    toastContainer.style.display = visible ? 'flex' : 'none';
+    toastContainer.style.display = visible ? 'flex' : 'none'; // Toggle toast visibility
 }
 
 
