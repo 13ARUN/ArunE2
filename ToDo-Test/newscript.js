@@ -148,7 +148,7 @@ function filterTasks(tasks, filter) {
 function createTaskElement(task) {
     let aTask = document.createElement("div"); //? Create div atask to add elements for each task
     aTask.classList.add("atask"); // Add a class name "atask"
-    aTask.style.opacity = task.completed ? '0.4' : '1';
+    aTask.style.opacity = task.completed ? '0.6' : '1';
     aTask.innerHTML = ` 
                         <div class="eachtask">
                             <input type="text" id="onetask-${task.id}" value="${task.text}" maxlength="150" readonly> <!--//? Task content Default:readonly-->
@@ -267,6 +267,21 @@ function toggleSave(taskId){
     //* Visual cue for edit disable
     taskText.style.borderStyle = 'none'; // Remove highlight on the bottom border
 
+    //* Enable the edit and delete buttons
+    const allEditButtons = document.querySelectorAll('.editdel button');
+    allEditButtons.forEach(button => {
+        button.disabled = false; // Enables edit and delete buttons
+    });  
+    
+    //* Enable radio buttons
+    const radioButtons = document.querySelectorAll('input[name="taskFilter"]');
+    radioButtons.forEach(radio => {
+        radio.disabled = false; // Enable radio buttons
+    });
+
+    inputBox.disabled = false;
+    clearButton.disabled = false;
+    addButton.disabled = false;
     
 }
 
@@ -311,6 +326,8 @@ function saveTask(taskId) {
         task.text = editedText;
         localStorage.setItem('tasks', JSON.stringify(allTasks));
 
+        
+
         showNotification('Task updated successfully!', 'green'); //! Function call: To show task updated message
         toggleSave(taskId); //! Function call: To toggle to edit/delete div
         renderTasks(); //! Function call: To Re-render tasks after saving
@@ -332,23 +349,6 @@ function cancelEdit(taskId) {
     let taskText = document.querySelector(`#onetask-${taskId}`); 
     taskText.value = task.text; // Reassign original task text
     toggleSave(taskId); //! Function call: To toggle to edit/delete div
-
-    //* Enable the edit and delete buttons
-    const allEditButtons = document.querySelectorAll('.editdel button');
-    allEditButtons.forEach(button => {
-        button.disabled = false; // Enables edit and delete buttons
-    });  
-    
-    //* Enable radio buttons
-    const radioButtons = document.querySelectorAll('input[name="taskFilter"]');
-    radioButtons.forEach(radio => {
-        radio.disabled = false; // Enable radio buttons
-    });
-
-    inputBox.disabled = false;
-    clearButton.disabled = false;
-    addButton.disabled = false;
-    
 }
 
 //* 17.Function to change completed status when checkbox is clicked
@@ -367,6 +367,8 @@ function checkBox(taskId) {
 function clearAllTasks() {
     const filter = localStorage.getItem('statusFilter');
     let message = '';
+
+    
 
     switch (filter) {
         case 'all':
@@ -474,4 +476,4 @@ function removeToast(toastMessage) {
 
 
 
-// Modify the saveTask function to include confirmation
+
