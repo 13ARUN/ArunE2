@@ -85,7 +85,16 @@
     <p class="notification" style="visibility: hidden;"></p>
 
     
-    <div id="toast-container"></div>
+    <div id="toast-container" style="display: none;">
+        <div id="toast-message" class="toast-message">
+            <span id="message-text"></span>
+            <div class="button-container">
+                <button id="confirm-button">Yes</button>
+                <button id="cancel-button">No</button>
+            </div>
+        </div>
+    </div>
+    
 
     <!--* JavaScript File -->
     <script src="newscript.js"></script>

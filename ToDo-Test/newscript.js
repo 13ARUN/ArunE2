@@ -425,52 +425,43 @@ function showNotification(text,color){
     }, 2000);
 }
 
-//* Function to create and show a toast message
+// //* Function to create and show a toast message
 function showToast(message, onConfirm, onCancel) {
     const toastContainer = document.getElementById('toast-container');
-    
-    const toastMessage = document.createElement('div');
-    toastMessage.className = 'toast-message';
-    
-    const messageText = document.createElement('span');
-    messageText.textContent = message;
-    
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'button-container';
+    const messageText = document.getElementById('message-text');
+    const confirmButton = document.getElementById('confirm-button');
+    const cancelButton = document.getElementById('cancel-button');
 
-    const confirmButton = document.createElement('button');
-    confirmButton.textContent = 'Yes';
+    // Show toast container
+    toastContainer.style.display = 'flex';
+    
+    // Set message text
+    messageText.textContent = message;
+
+    // Assign event handlers
     confirmButton.onclick = () => {
         onConfirm();
-        removeToast(toastMessage);
+        toggleToast(false); // Hide toast after confirmation
     };
-    
-    const cancelButton = document.createElement('button');
-    cancelButton.textContent = 'No';
+
     cancelButton.onclick = () => {
         onCancel();
-        removeToast(toastMessage);
+        toggleToast(false); // Hide toast after cancellation
     };
-    
-    buttonContainer.appendChild(confirmButton);
-    buttonContainer.appendChild(cancelButton);
-
-    toastMessage.appendChild(messageText);
-    toastMessage.appendChild(buttonContainer);
-    
-    toastContainer.appendChild(toastMessage);
-
-    toastContainer.style.display = 'flex'; 
 
     
 }
 
-// Function to remove toast message
-function removeToast(toastMessage) {
+// Function to hide toast message
+function toggleToast(visible) {
     const toastContainer = document.getElementById('toast-container');
-    toastContainer.removeChild(toastMessage);
-    toastContainer.style.display = 'none';   
+    toastContainer.style.display = visible ? 'flex' : 'none';
 }
+
+
+
+
+
 
 
 
