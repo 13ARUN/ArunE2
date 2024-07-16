@@ -6,11 +6,7 @@ const inputBox = document.querySelector('#input'), //? Task input field
       taskCountText = document.querySelector('.count h3'), //? Task couter display field
       notification = document.querySelector('.notification'); //? Notification message 
 
-//* 2.Elements to toggle no tasks and task list
-const noTasks = document.querySelector('.notasks'), //? No tasks page
-      showtask = document.querySelector('.tasklist'), //? Tasks page
-      taskActions = document.querySelector('.tasktext'); //? Task count & filter
-      countText = document.querySelector('.clear') //? clear button and count display field
+
 
 //* 3.Global variable for saving task with ID in local storage
 let taskIdCounter = localStorage.getItem('taskIdCounter') ? parseInt(localStorage.getItem('taskIdCounter')) : 0; //? ID counter variable for tasks
@@ -181,6 +177,12 @@ function createTaskElement(task) {
 
 //* 10.Function to toggle visibility of task list and no tasks page
 function toggleTaskListVisibility(tasks) {
+
+    const noTasks = document.querySelector('.notasks'), //? No tasks page
+      showtask = document.querySelector('.tasklist'), //? Tasks page
+      taskActions = document.querySelector('.tasktext'); //? Task count & filter
+      countText = document.querySelector('.clear') //? clear button and count display field
+
     if (tasks.length === 0) {
         taskCountText.textContent = `You have no tasks here!`; // display when all tasks are deleted
         noTasks.style.display = 'flex'; // Show no tasks
@@ -434,7 +436,7 @@ function showToast(message, onConfirm, onCancel) {
 
     // Show toast container
     toastContainer.style.display = 'flex';
-    
+
     // Set message text
     messageText.textContent = message;
 
@@ -452,7 +454,7 @@ function showToast(message, onConfirm, onCancel) {
     
 }
 
-// Function to hide toast message
+//* Function to hide toast message
 function toggleToast(visible) {
     const toastContainer = document.getElementById('toast-container');
     toastContainer.style.display = visible ? 'flex' : 'none';
