@@ -1,0 +1,710 @@
+/** Universal */
+
+/* ? Font,BoxSizing */
+*{
+    font-family: Arial,sans-serif;
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+}
+
+/** Html & Body */
+html,body{
+    height: 100%;
+    width: 100%;
+}
+
+
+
+/** Main Div */
+.main{
+    width: 100%;
+    height: 100%;
+    padding: 6% 25%;
+    background-image: url('../img/back2.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    
+
+}
+
+
+/** 1.todo Div */
+.todo{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(212, 174, 236, 0.801);
+    border-radius: 40px;
+    
+     
+}
+
+/** 1.1 Header */
+header{
+    color: #3f1477;
+    font-size: larger;
+    height: 12.5%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/** 1.2 Task field */
+.taskfield{
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/** 1.2.1 Task input section */
+.taskinput{
+    width: 80%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    background-color: #d7dbe4;
+    padding-left: 4%;
+}
+form{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/** 1.2.1.1 Task input field box*/
+.taskinput form input{
+    border: none;
+    outline: none;
+    background: transparent;
+    padding-left: 1%;
+    margin-right: 1%;
+    height: 60%;
+    width: 85%;
+    font-size: 18px;
+}
+
+
+/** 1.2.1.2 Task add button*/
+.taskinput form button{
+    border: none;
+    outline: none;
+    background-color: #461b80;
+    border-radius: 40px;
+    padding: 0%;
+    height: 100%;
+    width: 15%;
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.taskinput button:hover{
+    background-color: #340c68;
+    
+}
+.taskinput img{
+    width:30%;
+    height: 45%;
+}
+
+/** 1.3 Task text */
+.tasktext{
+    height: 12.5%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    
+    
+}
+/**1.3.1 Counter text */
+
+/** 1.3.2 Task filter and clear all */
+.taskfilterclr{
+    width: 50%;
+    height: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+/** 1.3.2.1 & 1.3.2.2 Filter and clear button */
+.taskfilterclr label{
+    font-weight: bold;
+    color: #3f1477;
+    width: 30%;
+    height: 100%;
+    background-color: #e0d1f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.taskfilterclr input{
+    display: none;
+}
+
+label:hover{
+    background-color: #d7bff7;   
+}
+
+.taskfilterclr input[type="radio"]:checked + label {
+    background-color: #461b80;
+    color: #e0d1f3; /* Adjust text color for better contrast */
+}
+
+
+/** 1.4 No tasks section */
+.notasks{
+    height: 77.5%;
+    width: 100%;
+    
+}
+/** 1.4.1 No task content */
+.notaskcontent{
+    height: 100%;
+    width: 100%;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+}
+/** 1.4.1.1 no task Image */
+.notaskcontent img{
+    width: 50%;
+    height: 25%;
+    object-fit: contain;
+}
+/** 1.4.1.2 np task text */
+.notaskcontent h2{
+    color: #3f1477;
+    height: 20%;
+    width: 100%;
+    margin-top: 2%;
+    display: flex;
+    justify-content: center;
+    border-radius: 40px;
+}
+
+/** 1.5 Task list */
+.tasklist{
+    display: flex;
+    width: 100%;
+    height: 55%;
+    padding: 0% 5% 0% 5%;
+}
+/** 1.5.1 Task display */
+.taskdisplay{
+    width: 90%;
+    height: 100%;
+    margin-left: 5%;
+    margin-right: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+/** 1.6 ul element */
+ul{
+    list-style: none;
+    list-style-position: inside;
+    height: 100%;
+    width: 95%;
+    overflow-y: auto;
+    padding-right: 2%;
+}
+ul::-webkit-scrollbar {
+    width: 5px;               
+} 
+ul::-webkit-scrollbar-track {
+    background: #e0d1f3;        
+}
+ul::-webkit-scrollbar-thumb {
+    background-color: #461b80;   
+    border-radius: 5px; 
+}
+
+form button:disabled,
+form input:disabled,
+.taskfilterclr input[type="radio"]:disabled + label,
+.editdel button:disabled,
+.savecancel button:disabled,
+.clear button:disabled {
+    cursor: not-allowed;
+}
+
+
+
+/** Dynamically added from Jscript */
+
+/** 1.6 Atask div */
+.atask{
+    background-color: #e0d1f3;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 17%;
+    margin-top: 1.5%;
+    margin-bottom: 1.5%;
+    transform: scale(0.98);
+}
+
+.atask:hover {
+    background-color: #cdb7eb;
+    transform: scale(1.0);
+}
+
+
+/** 1.6.1 Task content */
+.eachtask{
+    width: 73%;
+    height: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 3%;
+}
+/** 1.6.1.1  task Input in each task*/
+.eachtask input{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    height: 50%;
+    font-size: 20px;
+}
+/** 1.6.2 Edit and Delete butons */
+.editdel{
+    width: 25%;
+    height: 90%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: none;
+    outline: none;
+}
+.editdel button{
+    height: 55%;
+    width: 55%;
+    cursor: pointer;
+    background-color: #e0d1f3;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-radius: 30px;
+}
+.editdel button:hover{
+    background-color: #e0d1f3;
+}
+/** 1.6.2.1 EditDel image icon */
+.editdel img{
+    width: 60%;
+    height: 100%;
+    padding: 5%;
+    object-fit:contain;
+}
+/** 1.6.3 Save and cancel button */
+.savecancel{
+    width: 25%;
+    height: 90%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: none;
+    outline: none;
+}
+.savecancel button{
+    height: 55%;
+    width: 55%;
+    cursor: pointer;
+    background-color: #e0d1f3;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-radius: 30px;
+
+}
+.savecancel button:hover{
+    background-color: #bfacd8;
+}
+/** 1.6.3.1 SaveCancel image icon */
+.savecancel img{
+    width: 60%;
+    height: 100%;
+    padding: 5%;
+    object-fit:contain;
+}
+
+
+
+.clear{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10%;
+    width: 85%;
+}
+
+.count{
+    width: 68%;
+    height: 100%;
+}
+
+.count h3{
+    color: #3f1477;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center; 
+}
+
+.clear button{
+    font-weight: bold;
+    color: #3f1477;
+    width: 15%;
+    height: 65%;
+    background-color: #e0d1f3;
+    text-align: center;
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.clear button:hover{
+    background-color: #d7bff7;   
+}
+/** 2.Notification */
+.notification {  
+    top:5%;
+    left:40%;
+    width: 20%;
+    height: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    color: #d7dbe4;
+    font-size: 18px;
+    font-weight: bold;
+    overflow-wrap: break-word;
+    position: fixed;   
+}
+#toast-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* Initially hide the toast container */
+    align-items: center;
+    justify-content: center;
+    background-color: #00000086;
+    backdrop-filter: saturate(180%) blur(5px);
+    
+}
+
+
+.toast-message {
+    background-color: #e0d1f3; 
+    border: 1px solid #461b80; 
+    height: 20%;
+    width: 25%;
+    font-weight: bold;
+    color: #461b80; 
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.toast-message span {
+    height: 50%;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+}
+
+.toast-message .button-container {
+    display: flex;
+    gap: 10%;
+    height: 50%;
+    width: 100%;
+    display: flex;
+    
+    align-items: begin;
+    justify-content: center;
+}
+
+.toast-message button {
+    margin: 5px;
+    padding: 5px 10px;
+    border: none;
+    height: 50%;
+    width: 25%;
+    background-color: #461b80; 
+    color: #d7dbe4;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.toast-message button:hover {
+    background-color: #32105e; 
+}
+
+/** Media query - responsive design*/
+/*? Max width */
+
+/** 1680px-1440px */
+@media  (max-width: 1680px) {
+    .main{
+        padding: 7% 22%;
+    }
+}
+/** 1440px-1200px */
+@media  (max-width: 1440px) {
+    .main{
+        padding: 7% 18%;
+    }
+    .notification{
+        width: 25%;
+        left: 38%;
+        top: 3.5%;
+    }
+    .toast-message {
+        height: 25%;
+        width: 35%;
+    }
+}
+/** 1200px-960px */
+@media  (max-width: 1200px) {
+    .main{
+        padding: 10% 15%;
+    }
+   
+    .notification{
+        width: 40%;
+        left: 30%;
+        top: 3.25%;
+    }
+
+    .toast-message {
+        height: 20%;
+        width: 35%;
+    }
+    .toast-message {
+        height: 25%;
+        width: 40%;
+    }
+}
+/** 960px-820px */
+@media  (max-width: 960px) {
+    .main{
+        padding: 13% 12%;
+    }
+    
+}
+/** 820px-650px */
+@media  (max-width: 820px) {
+    .main{
+        padding: 16% 9%;
+    }
+    
+    .notification{
+        width: 50%;
+        left: 25%;
+        top: 3%;
+    }
+    .eachtask{
+        width: 67%;
+    }
+    .editdel{
+        width: 30%;
+    }
+    .savecancel{
+        width: 30%;
+    }
+    .atask{
+        height: 16.5%;
+        margin-top: 1.5%;
+        margin-bottom: 1.5%;
+    }
+    .taskfilterclr {
+        width: 65%;
+    }
+    .toast-message {
+        height: 25%;
+        width: 50%;
+    }
+    
+}
+/** 650px-420px */
+@media  (max-width: 650px) {
+    .main{
+        padding: 20% 8%;
+    }
+    
+    .notification{
+        width: 60%;
+        left: 20%;
+        top: 3%;
+    }
+    .eachtask{
+        width: 63%;
+    }
+    .editdel{
+        width: 35%;
+    }
+    .savecancel{
+        width: 35%;
+    }
+    .atask{
+        height: 15.5%;
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+    .clear button{
+        width: 25%;
+    } 
+    
+    .taskfilterclr {
+        width: 75%;
+    }
+    .taskinput form input {
+        width: 80%;
+    }
+    .taskinput form button {
+        width: 20%;
+    }
+    .toast-message {
+        height: 25%;
+        width: 60%;
+    }
+}
+    
+
+
+/** 480px-320px */
+@media  (max-width: 480px) {
+    .main{
+        padding: 22% 7%;
+    }
+    .taskfilterclr {
+        width: 85%;
+    }
+
+    .notification{
+        top: 3%;
+        left:18%;
+        width: 65%;
+    }
+    .eachtask{
+        width: 58%;
+    }
+    .editdel{
+        width: 40%;
+    }
+    .savecancel{
+        width: 40%;
+    }
+    .atask{
+        height: 16.5%;
+        margin-top: 2.5%;
+        margin-bottom: 2.5%;
+    }
+    .count {
+        width: 70%;
+        
+    }
+    .taskinput form input {
+        width: 70%;
+    }
+    .taskinput form button {
+        width: 30%;
+    }
+}
+/** less that 320px */
+@media  (max-width: 320px) {
+    .main{
+        padding: 25% 5%;
+    }
+     .taskfield{
+        height: 7%;
+    }
+    .taskfilterclr {
+        width: 99%;
+    }
+    .tasklist {
+        
+        padding: 0%;
+    }
+    .taskdisplay{
+        margin: 0%;
+        width: 100%;
+    }
+
+    .notification{
+        top: 2%;
+        left:5%;
+        width: 90%;
+    }
+    .eachtask{
+        width: 53%;
+    }
+    .editdel{
+        width: 45%;
+    }
+    .savecancel{
+        width: 45%;
+    }
+    .atask{
+        height: 17.5%;
+        margin-top: 2.5%;
+        margin-bottom: 2.5%;
+    }
+    .taskinput form input {
+        width: 60%;
+    }
+    .taskinput form button {
+        width: 40%;
+    }
+    .toast-message {
+        height: 25%;
+        width: 80%;
+    }
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="img/titleicon.png">
+    <title>ToDoHub</title>
+</head>
+<body>
+    <div class="main">
+        
+        <!--* 1.Todo Application -->
+        <div class="todo">
+            <!--* 1.1 Header Section -->
+            <header>
+                <h1>To Do Planner!</h1>
+            </header>
+
+            <!--* 1.2 Task Input Field -->
+            <div class="taskfield">
+                <div class="taskinput">
+                    <form onsubmit="event.preventDefault(); addTask();">
+                        <input type="text" id="input" placeholder="Enter your tasks..." maxlength="150" autocomplete="off">
+                        
+                        <button type="submit" title="Add" id="add" > <img src="img/taskadd.png" alt="add icon"></button>   
+                    </form> 
+                </div>
+            </div>
+
+            
+            <!--* 1.3 Task Text and Filter Section -->
+            <div class="tasktext">
+                <!-- Task count display -->
+                <div class="taskfilterclr">
+                    <input type="radio" name="taskFilter" id="all" value="all" onchange="filterTasks('all')" >
+                    <label for="all" title="All">All</label>
+                
+                    
+                    <input type="radio" name="taskFilter" id="inprogress" value="inprogress" onchange="filterTasks('inprogress')">
+                    <label for="inprogress" title="In Progress">In Progress</label>
+                    
+                
+                    <input type="radio" name="taskFilter" id="completed" value="completed" onchange="filterTasks('completed')">
+                    <label for="completed" title="Completed">Completed</label>
+                
+                </div>
+            </div>
+
+
+            
+
+            <!--* 1.4 No Tasks Message Section -->
+            <div class="notasks" style="display: none">
+                <div class="notaskcontent">
+                    <img src="img/notask.png" alt="notask image">
+                    <h2>Add tasks to begin!!</h2>
+                </div>
+            </div>
+
+            
+            
+            <!--* 1.5 Task List Section -->
+            <div class="tasklist" > <!-- Initially hidden -->
+                <div class="taskdisplay">
+                    <ul id="listtask">
+                        <!--* 1.6 atask-->
+                        <!--* Tasks will be added here as atask div -->
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class="clear">
+                <div class="count">
+                    <h3>You have n tasks to do!</h3>
+                </div> 
+                <button title="Clear" id="clear" onclick="clearAllTasks()">Clear Tasks</button> <!-- Clear all tasks button -->
+            </div>
+           
+        </div>
+        
+    </div>
+
+    <!--* 2.Notification Section -->
+    <p class="notification" style="visibility: hidden;"></p>
+
+    
+    <div id="toast-container" style="display: none;">
+        <div id="toast-message" class="toast-message">
+            <span id="message-text"></span>
+            <div class="button-container">
+                <button id="confirm-button"><h3>Yes</h3></button>
+                <button id="cancel-button"><h3>No</h3></button>
+            </div>
+        </div>
+    </div>
+    
+
+    <!--* JavaScript File -->
+    <script src="newscript.js"></script>
+</body>
+
+
+
+</html>
