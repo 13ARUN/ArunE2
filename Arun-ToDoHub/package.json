@@ -19,5 +19,8 @@
   "jest": {
     "testEnvironment": "jsdom"
   },
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "chance": "^1.1.12"
+  }
 }
